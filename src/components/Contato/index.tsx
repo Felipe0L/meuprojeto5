@@ -10,18 +10,18 @@ import ContatosClass from '../../models/Contatos'
 type Props = ContatosClass
 
 const Contato = ({
-  nome,
-  telefone,
-  email,
+  nome: nomeOriginal,
+  telefone: telefoneOriginal,
+  email: emailOriginal,
   descricao: descricaoOriginal,
   id
 }: Props) => {
   const dispatch = useDispatch()
   const [estaEditando, setEstaEditando] = useState(false)
-  const [descricao, setDescricao] = useState('')
-  const [nomeInput, setNomeInput] = useState('')
-  const [telInput, setTelInput] = useState('')
-  const [emailInput, setEmailInput] = useState('')
+  const [descricao, setDescricao] = useState(descricaoOriginal)
+  const [nomeInput, setNomeInput] = useState(nomeOriginal)
+  const [telInput, setTelInput] = useState(telefoneOriginal)
+  const [emailInput, setEmailInput] = useState(emailOriginal)
 
   useEffect(() => {
     if (descricaoOriginal.length > 0) {
@@ -32,6 +32,9 @@ const Contato = ({
   function cancelarEdicao() {
     setEstaEditando(false)
     setDescricao(descricaoOriginal)
+    setNomeInput(nomeOriginal)
+    setTelInput(telefoneOriginal)
+    setEmailInput(emailOriginal)
   }
 
   return (
@@ -42,7 +45,7 @@ const Contato = ({
           <label htmlFor="nome">Nome: </label>
           <S.Dados
             disabled={!estaEditando}
-            value={nome}
+            value={nomeInput}
             onChange={(evento) => setNomeInput(evento.target.value)}
             id="nome"
             type="text"
@@ -52,7 +55,7 @@ const Contato = ({
           <label htmlFor="telefone">Telefone: </label>
           <S.Dados
             disabled={!estaEditando}
-            value={telefone}
+            value={telInput}
             onChange={(evento) => setTelInput(evento.target.value)}
             id="telefone"
             type="number"
@@ -62,7 +65,7 @@ const Contato = ({
           <label htmlFor="email">E-mail: </label>
           <S.Dados
             disabled={!estaEditando}
-            value={email}
+            value={emailInput}
             onChange={(evento) => setEmailInput(evento.target.value)}
             id="email"
             type="email"
@@ -83,9 +86,9 @@ const Contato = ({
                 dispatch(
                   editarContato({
                     descricao,
-                    nome,
-                    telefone,
-                    email,
+                    nome: nomeInput,
+                    telefone: telInput,
+                    email: emailInput,
                     id
                   })
                 )
